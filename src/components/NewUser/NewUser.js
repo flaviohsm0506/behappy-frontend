@@ -2,17 +2,19 @@ import React, { Component } from "react";
 
 import Label from "../Label";
 import Input from "../Input";
-import GenderImage from "../GenderImage";
+import GenderSelector from "../GenderSelector";
 
 class NewUser extends Component {
   constructor(props) {
     super(props);
     this.state = {
       user: {
-        name: "Minora"
+        name: "",
+        gender: ""
       },
       validation: {
-        invalidName: false
+        invalidName: false,
+        invalidGender: false
       }
     };
   }
@@ -20,6 +22,15 @@ class NewUser extends Component {
   updateUserName = event => {
     let user = this.state.user;
     user.name = event.target.value;
+    this.setState({
+      user: user
+    });
+  };
+
+  updateUserGender = (event, gender) => {
+    event.preventDefault();
+    let user = this.state.user;
+    user.gender = gender;
     this.setState({
       user: user
     });
@@ -43,8 +54,15 @@ class NewUser extends Component {
             defaultValue={this.state.user.name}
             onChange={this.updateUserName}
           />
-          <GenderImage gender="m" />
-          <GenderImage gender="f" />
+          <Label
+            text="Seu gênero:"
+            invalidValue={this.state.validation.invalidGender}
+          />
+          <GenderSelector
+            invalidValue={this.state.validation.invalidGender}
+            gender={this.state.user.gender}
+            updateGender={this.updateUserGender}
+          />
         </form>
       </div>
     );
